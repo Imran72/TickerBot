@@ -1,6 +1,4 @@
 import praw
-import requests
-from bs4 import BeautifulSoup
 import os
 import nltk
 from dotenv import load_dotenv

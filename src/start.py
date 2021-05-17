@@ -2,7 +2,7 @@ import telebot
 import os
 from dotenv import load_dotenv
 from .functions import get_top
-
+import nltk
 load_dotenv()
 
 TOKEN = os.getenv('TOKEN')
@@ -10,8 +10,8 @@ TOKEN = os.getenv('TOKEN')
 bot = telebot.TeleBot(TOKEN)
 
 
-# nltk.download('averaged_perceptron_tagger')
-# nltk.download('punkt')
+nltk.download('averaged_perceptron_tagger')
+nltk.download('punkt')
 
 
 @bot.message_handler(commands=['start'])
