@@ -20,4 +20,3 @@ ENV/
 /.idea
 /.DS_Store
 /*.db
-/Procfile
