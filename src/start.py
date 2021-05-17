@@ -2,7 +2,6 @@ import telebot
 import os
 from dotenv import load_dotenv
 from .functions import get_top
-import nltk
 
 load_dotenv()
 
