@@ -18,14 +18,12 @@ morph = pymorphy2.MorphAnalyzer()
 tokenizer = RegexpTokenizer(r'\w+')
 
 
-def get_comments(dataset):
-    arr = []
-    for comment in dataset:
-        if isinstance(comment, MoreComments):
-            continue
-        else:
-            arr.append(comment.body)
-    return arr
+def get_comments(submission):
+    submissionList = []
+    submission.comments.replace_more(limit=100)
+    for comment in submission.comments.list():
+        submissionList.append(comment.body)
+    return submissionList
 
 
 # лемматизация входного слова
@@ -68,7 +66,7 @@ def to_lower(sen):
 
 
 def get_data():
-    dataset = pd.read_csv("data/tickers_nasdaq.csv")
+    dataset = pd.read_csv("data/all_tickers.csv")
 
     # оставляем только названия тикеров
     ticker_list = list(dataset.Symbol)
@@ -81,12 +79,12 @@ def get_data():
     return ticker_dict
 
 
-def to_format(arr, link):
+def to_format(arr, link, ticker_dict):
     data = link[85:85 + link[85:].find('/')]
     str = "Date: %s\n" % data
     index = 1
     for el in arr[::-1]:
-        str += "%d. %s\n" % (index, el.upper())
+        str += "%d. %s - mentioned %d times\n" % (index, el.upper(), ticker_dict[el])
         index += 1
     return str
 
@@ -95,9 +93,8 @@ def get_top(link):
     reddit = praw.Reddit(client_id=CLIENT_ID, client_secret=CLIENT_SECRET, user_agent=USER_AGENT)
     submission = reddit.submission(url=link)
 
-    comment_set = submission.comments.list()
-
-    arr = get_comments(comment_set)
+    arr = get_comments(submission)
+    print(len(arr))
     brr = get_without_stopwords(arr)
 
     ticker_dict = get_data()
@@ -108,4 +105,4 @@ def get_top(link):
 
     sorted_keys = sorted(ticker_dict, key=ticker_dict.get)
 
-    return to_format(sorted_keys[-10:], link)
+    return to_format(sorted_keys[-10:], link, ticker_dict)

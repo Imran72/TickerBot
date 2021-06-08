@@ -17,7 +17,7 @@ praw==7.2.0
 prawcore==2.0.0
 pymorphy2==0.9.1
 pymorphy2-dicts-ru==2.4.417127.4579844
-pyTelegramBotAPI==3.7.7
+pip==3.7.7
 python-dateutil==2.8.1
 python-dotenv==0.17.1
 pytz==2021.1
